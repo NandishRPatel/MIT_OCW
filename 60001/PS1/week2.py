@@ -21,4 +21,4 @@ while(flag):
 		#print(current_savings)
 		
 
-print("Number of months :",months)
+print("Number of Months :",months)
