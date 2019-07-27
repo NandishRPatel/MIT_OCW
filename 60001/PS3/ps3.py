@@ -140,7 +140,7 @@ def deal_hand(n):
     """
     
     hand={}
-    num_vowels = int(math.ceil(n / 3))
+    num_vowels = int(math.ceil(n / 3)) - 1
 
     for i in range(num_vowels):
         x = random.choice(VOWELS)
@@ -150,6 +150,8 @@ def deal_hand(n):
         x = random.choice(CONSONANTS)
         hand[x] = hand.get(x, 0) + 1
     
+    hand["*"] = 1
+
     return hand
 
 #
@@ -198,21 +200,16 @@ def is_valid_word(word, hand, word_list):
     """
     flag = 1
     copy_word = word.lower()
-    copy_word_list = list(set([i for i in copy_word]))
+    copy_word_list = [i for i in copy_word]
     if copy_word in word_list:
-        if not '*' in copy_word:
-            for i in copy_word_list:
-                if i in hand.keys():
-                    if hand[i] >= copy_word_list.count(i):
-                        flag *= 1
-                    else:
-                        flag *= 0
-                else:
-                    flag *= 0
-        else: flag *= 0
+        for i in copy_word:
+            if i in hand.keys():
+                if hand[i] >= copy_word_list.count(i): flag *= 1
+                else: flag *= 0
+            else: flag *= 0
         return bool(flag)
     else: return False
-
+    
 #
 # Problem #5: Playing a hand
 #
@@ -368,4 +365,5 @@ def play_game(word_list):
 #
 if __name__ == '__main__':
     word_list = load_words()
-    play_game(word_list)
+    #play_game(word_list)
+    is_valid_word("Rapture", {'r': 1, 'a': 3, 'p': 2, 'e': 1, 't': 1, 'u': 1}, word_list)
