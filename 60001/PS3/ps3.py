@@ -94,7 +94,7 @@ def get_word_score(word, n):
     word = word.lower()
     first = 0
     for i in word:
-        first += SCRABBLE_LETTER_VALUES[i]
+        if i != "*":first += SCRABBLE_LETTER_VALUES[i]
 
     second =  max([7*len(word) - (3 * (n - len(word))), 1])
 
@@ -201,6 +201,7 @@ def is_valid_word(word, hand, word_list):
     flag = 1
     copy_word = word.lower()
     copy_word_list = [i for i in copy_word]
+
     if copy_word in word_list:
         for i in copy_word:
             if i in hand.keys():
@@ -208,7 +209,15 @@ def is_valid_word(word, hand, word_list):
                 else: flag *= 0
             else: flag *= 0
         return bool(flag)
-    else: return False
+    else:
+        if "*" in copy_word:
+            for i in VOWELS:
+                if not i in hand.keys():
+                    temp = copy_word.replace("*", i)
+                    if temp in word_list:return True
+                    else: flag = 0
+        else: flag = 0
+        return bool(flag)
     
 #
 # Problem #5: Playing a hand
@@ -366,4 +375,4 @@ def play_game(word_list):
 if __name__ == '__main__':
     word_list = load_words()
     #play_game(word_list)
-    is_valid_word("Rapture", {'r': 1, 'a': 3, 'p': 2, 'e': 1, 't': 1, 'u': 1}, word_list)
+    print(is_valid_word("h*ney", {'n': 1, 'h': 1, '*': 1, 'y': 1, 'd': 1, 'w': 1, 'e': 2}, word_list))
