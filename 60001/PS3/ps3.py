@@ -115,11 +115,11 @@ def display_hand(hand):
 
     hand: dictionary (string -> int)
     """
-    
+    hand_str = ""
     for letter in hand.keys():
         for j in range(hand[letter]):
-             print(letter, end=' ')      # print all on the same line
-    print()                              # print an empty line
+            hand_str = hand_str + letter +  " "     # print all on the same line
+    return hand_str
 
 #
 # Make sure you understand how this function works and what it does!
@@ -229,8 +229,12 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
+    length = 0
+    for i in hand.values():
+        length += i
+
+    return length
+
 
 def play_hand(hand, word_list):
 
@@ -262,6 +266,24 @@ def play_hand(hand, word_list):
       returns: the total score for the hand
       
     """
+    total_score = 0
+    while calculate_handlen(hand) > 0:
+        print("current hand : " + display_hand(hand))
+
+        entered_word = input("Enter word, or \"!!\" to indicate that you are finished : ")
+        if entered_word == "!!":
+            break
+        else:
+            if is_valid_word(entered_word, hand, word_list):
+                temp_score = get_word_score(word, calculate_handlen(hand))
+                total_score += temp_score
+                print("\"" + entered_word + "\" earned " + str(temp_score) +"points. Total: " + str(total_score) + " points")
+            else:
+                print("That is not a valid word. Please choose another word .")
+            hand = update_hand(hand, entered_word)
+
+    print("Ran out of letters. Total score : " + str(total_score) + " point.")
+    return total_score
     
     # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
     # Keep track of the total score
@@ -332,8 +354,8 @@ def substitute_hand(hand, letter):
     pass  # TO DO... Remove this line when you implement this function
        
     
-def play_game(word_list):
-    """
+"""def play_game(word_list):
+   
     Allow the user to play a series of hands
 
     * Asks the user to input a total number of hands
@@ -361,9 +383,8 @@ def play_game(word_list):
     * Returns the total score for the series of hands
 
     word_list: list of lowercase strings
-    """
-    
     print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+"""
     
 
 
@@ -373,6 +394,6 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    word_list = load_words()
+    #word_list = load_words()
+    #hand = deal_hand(7)
     #play_game(word_list)
-    print(is_valid_word("h*ney", {'n': 1, 'h': 1, '*': 1, 'y': 1, 'd': 1, 'w': 1, 'e': 2}, word_list))
