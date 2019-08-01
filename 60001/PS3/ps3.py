@@ -267,22 +267,25 @@ def play_hand(hand, word_list):
       
     """
     total_score = 0
+    flag = 1
     while calculate_handlen(hand) > 0:
         print("current hand : " + display_hand(hand))
 
         entered_word = input("Enter word, or \"!!\" to indicate that you are finished : ")
         if entered_word == "!!":
+            flag = 0
             break
         else:
             if is_valid_word(entered_word, hand, word_list):
-                temp_score = get_word_score(word, calculate_handlen(hand))
+                temp_score = get_word_score(entered_word, calculate_handlen(hand))
                 total_score += temp_score
-                print("\"" + entered_word + "\" earned " + str(temp_score) +"points. Total: " + str(total_score) + " points")
+                print("\"" + entered_word + "\" earned " + str(temp_score) + " points. Total: " + str(total_score) + " points")
             else:
                 print("That is not a valid word. Please choose another word .")
             hand = update_hand(hand, entered_word)
-
-    print("Ran out of letters. Total score : " + str(total_score) + " point.")
+    
+    if flag != 0: print("Ran out of letters. Total score : " + str(total_score) + " point.")
+    
     return total_score
     
     # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
@@ -364,9 +367,9 @@ def substitute_hand(hand, letter):
     
        
     
-"""def play_game(word_list):
+def play_game(word_list):
    
-    Allow the user to play a series of hands
+    """Allow the user to play a series of hands
 
     * Asks the user to input a total number of hands
 
@@ -391,11 +394,19 @@ def substitute_hand(hand, letter):
                     a letter - you must play whatever hand you just had.
       
     * Returns the total score for the series of hands
-
     word_list: list of lowercase strings
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
-"""
-    
+    """
+    #print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+    numberHands = int(input("Enter total number of hands : "))
+    total_score = 0
+    while numberHands > 0:
+        hand = deal_hand(7)
+        temp_score = play_hand(hand,word_list)
+        print("Total score for this hand :", temp_score)
+        print("-----------------------------------------------")
+        total_score += temp_score
+        numberHands -= 1
+    print("Total score over all hands :", total_score)
 
 
 #
@@ -404,6 +415,6 @@ def substitute_hand(hand, letter):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    #word_list = load_words()
+    word_list = load_words()
     #hand = deal_hand(7)
-    #play_game(word_list)
+    play_game(word_list)
